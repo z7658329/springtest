@@ -1,0 +1,15 @@
+<context-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>/WEB-INF/daoContext.xml /WEB-INF/applicationContext.xml</param-value>
+</context-param>
+
+<listener>
+  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+<!-- or use the ContextLoaderServlet instead of the above listener-->
+<servlet>
+  <servlet-name>context</servlet-name>
+  <servlet-class>org.springframework.web.context.ContextLoaderServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>

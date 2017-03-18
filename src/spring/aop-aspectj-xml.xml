@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<!-- 注意！！此处的测试类并没有改到aspectj.xml下新建一个！！没必要 -->
+	<bean id="aspectj" class="com.aspire.aop.aspectj.TestAspectJ" />
+
+	<bean id="concurrentOperationExecutor" class="com.aspire.aop.aspectj.xml.ConcurrentOperationExecutor">
+		<property name="maxRetries" value="3" />
+		<property name="order" value="100" />
+	</bean>
+
+	<aop:config>
+
+		<aop:aspect id="concurrentOperationRetry" ref="concurrentOperationExecutor">
+			<!--1. 基于TestAspectJ 类并没有新建！此处 改为 com.aspire.aop.aspectj包下的所有类或者子包下的所有类的方法 
+				2.此处较前一种注解方式的稍作修改！切入点所对应的方法必需加上@Idempotent注解才处理！！！
+			 -->
+			<aop:pointcut id="idempotentOperation"
+				
+				expression="execution(* com.aspire.aop.aspectj.*.*(..)) and @annotation(com.aspire.aop.aspectj.xml.Idempotent)" />
+
+			<aop:around pointcut-ref="idempotentOperation" method="doConcurrentOperation" />
+
+		</aop:aspect>
+
+	</aop:config>
+
+
+
+
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+   <!-- 依赖   初始化   -->
+  <bean id="testa" class="com.aspire.bean.TestA" init-method="init"  depends-on="testb"/>
+  <bean id="testb" class="com.aspire.bean.TestB" lazy-init="true"/>
+  
+   <!-- autowire  -->
+	<bean id="auto_testa" class="spring.autowire.TestA" autowire="byType" />
+   <bean id="auto_testb" class="spring.autowire.TestB"/>
+   
+    <!-- 静态工厂  -->
+   <bean id="exampleBean" class="com.aspire.bean.StaticFactory" factory-method="createInstance"/>
+      
+       <!-- 静态实例工厂  -->
+       <!-- <bean id="factoryBean2" class="com.aspire.bean.StaticInstanceFactory"/>
+    <bean id="testa_factory"  factory-bean="factoryBean2" factory-method="createInstance2" /> -->
+    
+      <bean id="a" class="com.aspire.bean.A">
+  		<lookup-method name="createB" bean="b"/>
+	  </bean>
+  	<bean id="b" class="com.aspire.bean.B" scope="prototype"/>
+    
+ </beans>
